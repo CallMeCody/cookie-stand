@@ -1,52 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style/reset.css" type="text/css">
-  <link rel="stylesheet" href="style/style.css" type="text/css">
-  <title>Pat's Sales Table</title>
+  <title>Pat's Sales Page</title>
+  <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-
   <header>
-    <nav>
-      <img src="images/salmon.png" id="animate">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="sales.html">Sales</a></li>
-      </ul>
-    </nav>
+    <h1>Pat's Sales Page</h1>
   </header>
 
-  <div>
-    <h1>Pat's Salmon Cookies Sales Table</h1>
-  </div>
+  <main>
+    <a href="index.html">Home Page</a>
+    <ul id="seattle">Seattle</ul>
+    <ul id="tokyo">Tokyo</ul>
+    <ul id="dubai">Dubai</ul>
+    <ul id="paris">Paris</ul>
+    <ul id="lima">Lima</ul>
+  </main>
+  
+  <footer>
 
-  <table id="storeTable"></table>
-
-  <form id="createEntry">
-    <fieldset>
-
-      <legend>Enter A New Store</legend>
-
-      <label for="storeName">Store Name</label>
-      <input type="text" name="storeName"> <br>
-
-      <label for="minCust">Minimum Customers/hr</label>
-      <input type="text" name="minCust"> <br>
-
-      <label for="maxCust">Maximum Customers/hr</label>
-      <input type="text" name="maxCust"> <br>
-
-      <label for="avgCust">Average Cookie Sold</label>
-      <input type="text" name="avgCust"> <br>
-
-      <input type="submit" value="Create New Entry">
-
-    </fieldset>
-  </form>
-
+  </footer>
   <script src="js/app.js"></script>
+
 </body>
 </html>
