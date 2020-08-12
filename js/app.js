@@ -16,56 +16,57 @@ function Shop(name, minNumCustomers, maxNumCustomers, averageCookiesSold) {
   allShopArray.push(this);
 }
 
-Shop.prototype.getHourlyCookiesSold = function() {
-  
-}
-Shop.prototype.renderTable = renderTable;
+Shop.prototype.getRandInt = function (min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+};
+
+Shop.prototype.salesData
 
 
 //=========Functions===========//
 
 
 
-var seattleShop = {
-  name: 'Seattle',
-  minCust: 23,
-  maxCust: 65,
-  avgCookieSales: 6.3,
-  sales: [],
-  getRandInt: function (min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  },
+// var seattleShop = {
+//   name: 'Seattle',
+//   minCust: 23,
+//   maxCust: 65,
+//   avgCookieSales: 6.3,
+//   sales: [],
+//   getRandInt: function (min, max) {
+//     return Math.floor(Math.random() * (max - min)) + min;
+//   },
 
-  salesData: function () {
-    for (var i = 0; i < hoursOpen.length; i++) {
-      this.sales.push(Math.ceil(this.getRandInt(this.minCust, this.maxCust) * this.avgCookieSales));
-    }
-  },
+//   salesData: function () {
+//     for (var i = 0; i < hoursOpen.length; i++) {
+//       this.sales.push(Math.ceil(this.getRandInt(this.minCust, this.maxCust) * this.avgCookieSales));
+//     }
+//   },
 
-  render: function () {
-    // call/invoke our salesData method
-    this.salesData();
-    // render to the DOM our sales array property
-    // step 1. find the target in the HTML
-    var seattleShop = document.getElementById('seattle');
-    var total = 0;
-    for (var i = 0; i < this.sales.length; i++) {
-      // step 2. create the element
-      // step 2(optional). populate the text
-      var liE1 = document.createElement('li');
-      liE1.textContent = `${hoursOpen[i]}: ${this.sales[i]} cookies`;
-      // 6am: 16 cookies
-      // step 3. append it to the DOM
-      total = total + this.sales[i];
-      seattleShop.append(liE1);
-    }
-    console.log(total);
-  }
-};
+//   render: function () {
+//     // call/invoke our salesData method
+//     this.salesData();
+//     // render to the DOM our sales array property
+//     // step 1. find the target in the HTML
+//     var seattleShop = document.getElementById('seattle');
+//     var total = 0;
+//     for (var i = 0; i < this.sales.length; i++) {
+//       // step 2. create the element
+//       // step 2(optional). populate the text
+//       var liE1 = document.createElement('li');
+//       liE1.textContent = `${hoursOpen[i]}: ${this.sales[i]} cookies`;
+//       // 6am: 16 cookies
+//       // step 3. append it to the DOM
+//       total = total + this.sales[i];
+//       seattleShop.append(liE1);
+//     }
+//     console.log(total);
+//   }
+// };
 
-seattleShop.render();
-seattleShop.salesData();
-console.log(seattleShop.sales);
+// seattleShop.render();
+// seattleShop.salesData();
+// console.log(seattleShop.sales);
 
 
 // var tokyoShop = {
