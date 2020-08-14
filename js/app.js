@@ -1,11 +1,17 @@
 'use strict';
-
-var hoursOpen = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm'];
+//=====================Global Variables=====================//
+var hoursOfOperation = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm'];
 var allShopArray = [];
 
-//=========Objects===========//
-var seattleShop = new Shop('Seattle', 23, 65, 6.3);
+//===========================Objects=========================//
 
+var seattleShop = new Shop('Seattle', 23, 65, 6.3);
+var tokyoShop = new Shop('Tokyo', 3, 24, 1.2);
+var dubaiShop = new Shop('Dubai', 11, 38, 3.7);
+var parisShop = new Shop('Paris', 20, 38, 2.3);
+var limaShop = new Shop('Lima', 2, 16, 4.6);
+
+// ====================Constructors==========================//
 
 function Shop(name, minNumCustomers, maxNumCustomers, averageCookiesSold) {
   this.name = name;
@@ -16,219 +22,140 @@ function Shop(name, minNumCustomers, maxNumCustomers, averageCookiesSold) {
   allShopArray.push(this);
 }
 
-Shop.prototype.getRandInt = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-};
+Shop.prototype.getHourlyCookiesSold = getHourlyCookiesSold;
+Shop.prototype.renderTable = renderTable;
 
-Shop.prototype.salesData
+//=======================Event Listener======================//
 
+var newShopEntry = document.getElementById('createEntry');
 
-//=========Functions===========//
+newShopEntry.addEventListener('submit', createNewShopEntry);
 
+function createNewShopEntry(newShopEvent) {
+  newShopEvent.preventDefault();
 
+  var name = newShopEvent.target.shopName.value;
+  var minCustomer = newShopEvent.target.minCust.value;
+  var maxCustomer = newShopEvent.target.maxCust.value;
+  var avgCustomer = newShopEvent.target.avgCust.value;
 
-// var seattleShop = {
-//   name: 'Seattle',
-//   minCust: 23,
-//   maxCust: 65,
-//   avgCookieSales: 6.3,
-//   sales: [],
-//   getRandInt: function (min, max) {
-//     return Math.floor(Math.random() * (max - min)) + min;
-//   },
+  var createNewShop = new Shop(name, minCustomer, maxCustomer, avgCustomer);
+  createNewShop.renderTable();
+  deleteRow();
+  totalCookiesPerHour();
+}
 
-//   salesData: function () {
-//     for (var i = 0; i < hoursOpen.length; i++) {
-//       this.sales.push(Math.ceil(this.getRandInt(this.minCust, this.maxCust) * this.avgCookieSales));
-//     }
-//   },
+//======================Functions===========================//
 
-//   render: function () {
-//     // call/invoke our salesData method
-//     this.salesData();
-//     // render to the DOM our sales array property
-//     // step 1. find the target in the HTML
-//     var seattleShop = document.getElementById('seattle');
-//     var total = 0;
-//     for (var i = 0; i < this.sales.length; i++) {
-//       // step 2. create the element
-//       // step 2(optional). populate the text
-//       var liE1 = document.createElement('li');
-//       liE1.textContent = `${hoursOpen[i]}: ${this.sales[i]} cookies`;
-//       // 6am: 16 cookies
-//       // step 3. append it to the DOM
-//       total = total + this.sales[i];
-//       seattleShop.append(liE1);
-//     }
-//     console.log(total);
-//   }
-// };
+function getRandomCustomerCount(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-// seattleShop.render();
-// seattleShop.salesData();
-// console.log(seattleShop.sales);
+function getCookieSum(cookies) {
+  var sum = 0;
+  for (var g = 0; g < cookies.length; g++) {
+    sum += cookies[g];
+  }
+  return sum;
+}
 
+var holdMyNumber = 6;
+function deleteRow() {
+  document.getElementById('shopTable').deleteRow(holdMyNumber);
+  holdMyNumber += 1;
+}
 
-// var tokyoShop = {
-//   name: 'Tokyo',
-//   minCust: 3,
-//   maxCust: 24,
-//   avgCookieSales: 1.2,
-//   sales: [],
-//   getRandInt: function (min, max) {
-//     return Math.floor(Math.random() * (max - min)) + min;
-//   },
+function getHourlyCookiesSold() {
+  for (var i = 0; i < hoursOfOperation.length; i++) {
+    var randomNumbers = getRandomCustomerCount(this.minNumCustomers, this.maxNumCustomers);
+    var totalHourlySales = Math.round(randomNumbers * this.averageCookiesSold);
+    this.cookiesSold.push(totalHourlySales);//hourly cookie total sales per city pushed to array named cookiesSold
+  }
+}
 
-//   salesData: function () {
-//     for (var i = 0; i < hoursOpen.length; i++) {
-//       this.sales.push(Math.ceil(this.getRandInt(this.minCust, this.maxCust) * this.avgCookieSales));
-//     }
-//   },
+function renderToPage() {
+  //add items to html
+  var parentUnorderedList = document.getElementById(this.listId);
+  for (var j = 0; j < hoursOfOperation.length; j++) {
+    var listItem = document.createElement('li');
+    listItem.textContent = hoursOfOperation[j] + ': ' + this.cookiesSold[j] + ' cookies.';
+    parentUnorderedList.appendChild(listItem);
+  }
+  var nameHeading = document.getElementById(this.headingId);
+  var displayCity = document.createElement('h2');
+  displayCity.textContent = this.name;
+  nameHeading.appendChild(displayCity);
+}
 
-//   render: function () {
-//     // call/invoke our salesData method
-//     this.salesData();
-//     // render to the DOM our sales array property
-//     // step 1. find the target in the HTML
-//     var tokyoShop = document.getElementById('tokyo');
-//     var total = 0;
-//     for (var i = 0; i < this.sales.length; i++) {
-//       // step 2. create the element
-//       // step 2(optional). populate the text
-//       var liE1 = document.createElement('li');
-//       liE1.textContent = `${hoursOpen[i]}: ${this.sales[i]} cookies`;
-//       // 6am: 16 cookies
-//       // step 3. append it to the DOM
-//       total = total + this.sales[i];
-//       tokyoShop.append(liE1);
-//     }
-//     console.log(total);
-//   }
-// };
+function renderHeading() {
+  var table = document.getElementById('shopTable');
+  var headerRow = document.createElement('tr');
+  var headerCell = document.createElement('th');
+  headerCell.textContent = 'City';
+  headerRow.appendChild(headerCell);
+  for (var i = 0; i < hoursOfOperation.length; i++) {
+    var newCell = document.createElement('th');
+    newCell.textContent = hoursOfOperation[i];
+    headerRow.appendChild(newCell);
+  }
+  headerCell = document.createElement('th');
+  headerCell.textContent = 'Daily Total: ';
+  headerRow.appendChild(headerCell);
+  table.appendChild(headerRow);
+}
 
-// tokyoShop.render();
-// tokyoShop.salesData();
-// console.log(tokyoShop.sales);
+function renderTable() {
+  this.getHourlyCookiesSold();
+  var totalCookies = getCookieSum(this.cookiesSold);
+  var table = document.getElementById('shopTable');
+  var tableRow = document.createElement('tr');
+  var tableCell = document.createElement('td');
+  tableRow.appendChild(tableCell);
+  tableCell.textContent = this.name;
+  for (var i = 0; i < this.cookiesSold.length; i++) {
+    tableCell = document.createElement('td');
+    tableCell.textContent = this.cookiesSold[i];
+    tableRow.appendChild(tableCell);
+  }
+  var tableCell = document.createElement('th');
+  tableCell.textContent = totalCookies;
+  tableRow.appendChild(tableCell);
+  table.appendChild(tableRow);
+}
 
-// var dubaiShop = {
-//   name: 'dubai',
-//   minCust: 3,
-//   maxCust: 24,
-//   avgCookieSales: 1.2,
-//   sales: [],
-//   getRandInt: function (min, max) {
-//     return Math.floor(Math.random() * (max - min)) + min;
-//   },
+function totalCookiesPerHour() {
+  var tempCookies = 0;
+  var totalCookies = 0;
+  var table = document.getElementById('shopTable');
+  var footerRow = document.createElement('tr');
+  var footerCell = document.createElement('th');
+  footerCell.textContent = 'Hourly Total: ';
+  footerRow.appendChild(footerCell);
+  for (var i = 0; i < hoursOfOperation.length; i++) {
+    var totalCookies = 0;
+    for (var j = 0; j < allShopArray.length; j++) {
+      totalCookies += allShopArray[j].cookiesSold[i];
+      tempCookies += allShopArray[j].cookiesSold[i];
+    }
+    var footerCell = document.createElement('td');
+    footerCell.textContent = totalCookies;
+    footerRow.appendChild(footerCell);
+  }
+  console.log('total cookies: ', tempCookies);
+  footerCell = document.createElement('td');
+  footerCell.textContent = tempCookies; //final number
+  footerRow.appendChild(footerCell);
+  table.appendChild(footerRow);
+}
 
-//   salesData: function () {
-//     for (var i = 0; i < hoursOpen.length; i++) {
-//       this.sales.push(Math.ceil(this.getRandInt(this.minCust, this.maxCust) * this.avgCookieSales));
-//     }
-//   },
+// //================Invokes===========================//
 
-//   render: function () {
-//     // call/invoke our salesData method
-//     this.salesData();
-//     // render to the DOM our sales array property
-//     // step 1. find the target in the HTML
-//     var dubaiShop = document.getElementById('dubai');
-//     var total = 0;
-//     for (var i = 0; i < this.sales.length; i++) {
-//       // step 2. create the element
-//       // step 2(optional). populate the text
-//       var liE1 = document.createElement('li');
-//       liE1.textContent = `${hoursOpen[i]}: ${this.sales[i]} cookies`;
-//       // 6am: 16 cookies
-//       // step 3. append it to the DOM
-//       total = total + this.sales[i];
-//       dubaiShop.append(liE1);
-//     }
-//     console.log(total);
-//   }
-// };
-
-// dubaiShop.render();
-// dubaiShop.salesData();
-// console.log(dubaiShop.sales);
-
-// var parisShop = {
-//   name: 'paris',
-//   minCust: 3,
-//   maxCust: 24,
-//   avgCookieSales: 1.2,
-//   sales: [],
-//   getRandInt: function (min, max) {
-//     return Math.floor(Math.random() * (max - min)) + min;
-//   },
-
-//   salesData: function () {
-//     for (var i = 0; i < hoursOpen.length; i++) {
-//       this.sales.push(Math.ceil(this.getRandInt(this.minCust, this.maxCust) * this.avgCookieSales));
-//     }
-//   },
-
-//   render: function () {
-//     // call/invoke our salesData method
-//     this.salesData();
-//     // render to the DOM our sales array property
-//     // step 1. find the target in the HTML
-//     var parisShop = document.getElementById('paris');
-//     var total = 0;
-//     for (var i = 0; i < this.sales.length; i++) {
-//       // step 2. create the element
-//       // step 2(optional). populate the text
-//       var liE1 = document.createElement('li');
-//       liE1.textContent = `${hoursOpen[i]}: ${this.sales[i]} cookies`;
-//       // 6am: 16 cookies
-//       // step 3. append it to the DOM
-//       total = total + this.sales[i];
-//       parisShop.append(liE1);
-//     }
-//     console.log(total);
-//   }
-// };
-
-// parisShop.render();
-// parisShop.salesData();
-// console.log(parisShop.sales);
-
-// var limaShop = {
-//   name: 'lima',
-//   minCust: 3,
-//   maxCust: 24,
-//   avgCookieSales: 1.2,
-//   sales: [],
-//   getRandInt: function (min, max) {
-//     return Math.floor(Math.random() * (max - min)) + min;
-//   },
-
-//   salesData: function () {
-//     for (var i = 0; i < hoursOpen.length; i++) {
-//       this.sales.push(Math.ceil(this.getRandInt(this.minCust, this.maxCust) * this.avgCookieSales));
-//     }
-//   },
-
-//   render: function () {
-//     // call/invoke our salesData method
-//     this.salesData();
-//     // render to the DOM our sales array property
-//     // step 1. find the target in the HTML
-//     var limaShop = document.getElementById('lima');
-//     var total = 0;
-//     for (var i = 0; i < this.sales.length; i++) {
-//       // step 2. create the element
-//       // step 2(optional). populate the text
-//       var liE1 = document.createElement('li');
-//       liE1.textContent = `${hoursOpen[i]}: ${this.sales[i]} cookies`;
-//       // 6am: 16 cookies
-//       // step 3. append it to the DOM
-//       total = total + this.sales[i];
-//       limaShop.append(liE1);
-//     }
-//     console.log(total);
-//   }
-// };
-
-// limaShop.render();
-// limaShop.salesData();
-// console.log(limaShop.sales);
+renderHeading();
+seattleShop.renderTable();
+tokyoShop.renderTable();
+dubaiShop.renderTable();
+parisShop.renderTable();
+limaShop.renderTable();
+totalCookiesPerHour();
