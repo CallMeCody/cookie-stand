@@ -1,6 +1,6 @@
 'use strict';
 //=====================Global Variables=====================//
-var hoursOfOperation = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm'];
+var hoursOfOperation = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm'];
 var allShopArray = [];
 
 //===========================Objects=========================//
@@ -30,8 +30,8 @@ Shop.prototype.renderTable = renderTable;
 var newShopEntry = document.getElementById('createEntry');
 
 newShopEntry.addEventListener('submit', createNewShopEntry);
-
-function createNewShopEntry(newShopEvent) {
+  
+function createNewShopEntry(newShopEvent){
   newShopEvent.preventDefault();
 
   var name = newShopEvent.target.shopName.value;
@@ -39,6 +39,7 @@ function createNewShopEntry(newShopEvent) {
   var maxCustomer = newShopEvent.target.maxCust.value;
   var avgCustomer = newShopEvent.target.avgCust.value;
 
+  // console.log(name, minCustomer, maxCustomer, avgCustomer);
   var createNewShop = new Shop(name, minCustomer, maxCustomer, avgCustomer);
   createNewShop.renderTable();
   deleteRow();
@@ -47,6 +48,7 @@ function createNewShopEntry(newShopEvent) {
 
 //======================Functions===========================//
 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 function getRandomCustomerCount(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -55,12 +57,13 @@ function getRandomCustomerCount(min, max) {
 
 function getCookieSum(cookies) {
   var sum = 0;
-  for (var g = 0; g < cookies.length; g++) {
-    sum += cookies[g];
+  for (var g = 0; g < cookies.length; g++)
+  {
+    sum+=cookies[g];
   }
   return sum;
 }
-
+// https://www.w3schools.com/jsref/met_table_deleterow.asp
 var holdMyNumber = 6;
 function deleteRow() {
   document.getElementById('shopTable').deleteRow(holdMyNumber);
@@ -68,20 +71,32 @@ function deleteRow() {
 }
 
 function getHourlyCookiesSold() {
-  for (var i = 0; i < hoursOfOperation.length; i++) {
+  // var tempSum = 0;
+  for (var i = 0; i < hoursOfOperation.length; i++)
+  {
+    // var hourlyTotals = 0;
     var randomNumbers = getRandomCustomerCount(this.minNumCustomers, this.maxNumCustomers);
     var totalHourlySales = Math.round(randomNumbers * this.averageCookiesSold);
+    // console.log('ghcsTotal :', totalHourlySales);
     this.cookiesSold.push(totalHourlySales);//hourly cookie total sales per city pushed to array named cookiesSold
   }
 }
+// function dailyTotalSales() {
+//   var totalCookies = getCookieSum(this.cookiesSold);
+//   var totalList = document.getElementById('shopTable');
+//   var cookieListTotal = document.createElement('li');
+//   cookieListTotal.textContent = ('Total Cookies Sold: ' + totalCookies);
+//   totalList.appendChild(cookieListTotal);
+// }
 
 function renderToPage() {
   //add items to html
   var parentUnorderedList = document.getElementById(this.listId);
-  for (var j = 0; j < hoursOfOperation.length; j++) {
-    var listItem = document.createElement('li');
-    listItem.textContent = hoursOfOperation[j] + ': ' + this.cookiesSold[j] + ' cookies.';
-    parentUnorderedList.appendChild(listItem);
+  for (var j = 0; j < hoursOfOperation.length; j++)
+  {
+  var listItem = document.createElement('li');
+  listItem.textContent = hoursOfOperation[j] + ': ' + this.cookiesSold[j] + ' cookies.';
+  parentUnorderedList.appendChild(listItem);
   }
   var nameHeading = document.getElementById(this.headingId);
   var displayCity = document.createElement('h2');
@@ -95,7 +110,7 @@ function renderHeading() {
   var headerCell = document.createElement('th');
   headerCell.textContent = 'City';
   headerRow.appendChild(headerCell);
-  for (var i = 0; i < hoursOfOperation.length; i++) {
+  for(var i = 0; i < hoursOfOperation.length; i++) {
     var newCell = document.createElement('th');
     newCell.textContent = hoursOfOperation[i];
     headerRow.appendChild(newCell);
@@ -135,7 +150,7 @@ function totalCookiesPerHour() {
   footerRow.appendChild(footerCell);
   for (var i = 0; i < hoursOfOperation.length; i++) {
     var totalCookies = 0;
-    for (var j = 0; j < allShopArray.length; j++) {
+    for( var j = 0; j < allShopArray.length; j++) {
       totalCookies += allShopArray[j].cookiesSold[i];
       tempCookies += allShopArray[j].cookiesSold[i];
     }
@@ -143,7 +158,7 @@ function totalCookiesPerHour() {
     footerCell.textContent = totalCookies;
     footerRow.appendChild(footerCell);
   }
-  console.log('total cookies: ', tempCookies);
+  console.log('total cookies: ',tempCookies);
   footerCell = document.createElement('td');
   footerCell.textContent = tempCookies; //final number
   footerRow.appendChild(footerCell);
